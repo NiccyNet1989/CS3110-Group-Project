@@ -3,30 +3,14 @@ public class State {
     public Transition[] transitions;
 
     private String name;
-    public boolean isAcceptState = false;
 
-
-    State(Transition[] inputtedTransitions, boolean startState, boolean defineAcceptState) {
-        this.transitions = new Transition[inputtedTransitions.length];
-
-        for (int i = 0; i < inputtedTransitions.length; i++) {
-            this.transitions[i] = inputtedTransitions[i];
-        }
-
-        if (startState) this.isLive = true;
-        if (defineAcceptState) this.isAcceptState = true;
+    State(String InputtedName) {
+        this.transitions = new Transition[0];
+        this.name = InputtedName;
     }
 
-    State(Transition[] inputtedTransitions, boolean startState, String InputtedName, boolean defineAcceptState) {
-        this.transitions = new Transition[inputtedTransitions.length];
-
-        for (int i = 0; i < inputtedTransitions.length; i++) {
-            this.transitions[i] = inputtedTransitions[i];
-        }
-
-        if (startState) this.isLive = true;
-        this.name = InputtedName;
-        if (defineAcceptState) this.isAcceptState = true;
+    public void setTransitions(Transition[] newTransitions) {
+        this.transitions = newTransitions;
     }
 
     public boolean isLive() {
@@ -41,7 +25,16 @@ public class State {
         return name;
     }
 
-    public boolean isAcceptState() {
-        return isAcceptState;
+
+    public void printTransitions() {
+        System.out.println(this.getName() + "'s Transitions\n========================");
+
+        for (int i = 0; i < this.transitions.length; i++) {
+            System.out.println(transitions[i].getInput() + " goes to " + transitions[i].getTransitionState().getName());
+        }
+    }
+
+    public Transition[] getTransitions() {
+        return transitions;
     }
 }

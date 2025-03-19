@@ -12,6 +12,6 @@ public class Transition {
     }
 
     public State getTransitionState() {
-        return transitionState;
+        return this.transitionState;
     }
 }
