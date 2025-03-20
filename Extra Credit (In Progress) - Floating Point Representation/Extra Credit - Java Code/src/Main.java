@@ -37,11 +37,7 @@ public class Main {
         input = scanner.nextLine();
         System.out.print("\n");
 
-        if (decimalReaderNFA.isValidInput(input)) {
-                System.out.print("\n" + input + " is a valid input (Ends on an accept state).");
-            } else {
-                System.out.print("\n" + input + " is an invalid input (Does not end on an accept state).");
-            }
+        decimalReaderNFA.isValidInput(input);
 
 //        while (true) {
 //            System.out.print("Please input any string to test Decimal Reader NFA\n*Input the string 'exit' to end the program\n\n");

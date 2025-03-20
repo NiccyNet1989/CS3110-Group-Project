@@ -18,13 +18,19 @@ public class NFA {
             this.acceptStates[i] = finishes[i];
         }
 
-        liveStates = new int[states.length];
-        for (int i = 0; i < liveStates.length; i++) {
-            if (states[i].isLive) {
-                liveStates[i] = 1;
+        this.liveStates = new int[this.states.length];
+        for (int i = 0; i < this.liveStates.length; i++) {
+            if (this.states[i].isLive) {
+                this.liveStates[i] = 1;
             } else {
-                liveStates[i] = 0;
+                this.liveStates[i] = 0;
             }
+        }
+
+
+        //Here the constructor indexes each state's index field, so we can more easily reference their index in the states[] and liveStates[] arrays
+        for (int i = 0; i < this.states.length; i++) {
+            this.states[i].setIndex(i);
         }
     }
 
@@ -36,27 +42,19 @@ public class NFA {
     }
 
     public boolean isValidInput(String input) {
+        System.out.print("Checking if \"" + input + "\" is a valid input...\n");
         boolean finishedOnLiveState = false;
         char[] stringToCharArray = input.toCharArray();
         boolean firstIteration = true;
+        int iteration = 0;
 
         for (char character : stringToCharArray) {
             //The following is just to display the starting point after lambda functions have been considered
             if (firstIteration) {
-                System.out.print("Starting point (After considering λ transitions)\n");
+                System.out.print("Starting point (After considering 'λ' transitions)\n");
 
-                for (int i = 0; i < this.states.length; i++) {
-                    if (liveStates[i] == 1) {
-                        for (Transition transition : states[i].getTransitions()) {
-                            if (transition.getInput() == 'λ') {
-                                transition.getTransitionState().setLive(true);
-                            }
-                        }
-                        for (int j = 0; j < this.states.length; j++) {
-                            if (states[j].isLive) liveStates[j] = 1;
-                        }
-                    }
-                }
+                considerLambdas();
+
                 printLiveStates();
                 firstIteration = false;
                 System.out.print("\n");
@@ -64,21 +62,9 @@ public class NFA {
             System.out.print("Reading Character: " + character + "\n");
 
             //Before we consider anything, we must update the liveStates so that all states with a 'λ' transition activate their corresponding transitions
-            //Note that we run the process n^2 times, where n is the number of states, to account for instances where a 'λ' activates a state with another 'λ' and so on
-            //By running n^2 times, we run this process as many times as needed to capture the highest possible amount of chains where a 'λ' activates another 'λ'
+            //For this, we use the considerLambdas method
             if (!firstIteration) {
-                for (int i = 0; i < this.states.length; i++) {
-                    if (liveStates[i] == 1) {
-                        for (Transition transition : states[i].getTransitions()) {
-                            if (transition.getInput() == 'λ') {
-                                transition.getTransitionState().setLive(true);
-                            }
-                        }
-                        for (int j = 0; j < this.states.length; j++) {
-                            if (states[j].isLive) liveStates[j] = 1;
-                        }
-                    }
-                }
+                considerLambdas();
             }
 
             //Now we generate a temporary array which will have all states to be "dead" states
@@ -99,13 +85,7 @@ public class NFA {
                 for (Transition transition : this.states[i].getTransitions()) {
                     //If a transition does match an inputted character or is a 'λ' transition, we then look at its corresponding transitionState
                     if (character == transition.getInput()) {
-                        //To find the matching state for the Transition at hand, we run through the NFA's states again
-                        for (int j = 0; j < this.states.length; j++) {
-                            //And if the state matches, we set it to be equal to 1 in the tempStateArray
-                            //Note that this does not change which states are live in the states array, preserving the nature of the given iteration
-                            //Instead, we will update the actual live states after we are done reading the character at this iteration
-                            if (this.states[j].equals(transition.getTransitionState())) tempStateArray[j] = 1;
-                        }
+                        tempStateArray[transition.getTransitionState().getIndex()] = 1;
                     }
                 }
             }
@@ -115,20 +95,28 @@ public class NFA {
             //So now, we must update which states on the NFA are live using the State Class's setLive method
             //First, we'll set all states to be dead
             for (int i = 0; i < this.states.length; i++) {
-                this.states[i].setLive(false);
-                this.liveStates[i] = 0;
+                activateState(false, this.states[i], i);
             }
 
             //Then, we use tempStateArray to set each state at their corresponding index to be live, if the element at the given state's index is a 1 and not a 0
             for (int i = 0; i < this.states.length; i++) {
                 if (tempStateArray[i] == 1) {
-                    this.states[i].setLive(true);
-                    this.liveStates[i] = 1;
+                    activateState(true, this.states[i], i);
                 }
             }
 
+            iteration++;
             printLiveStates();
-            System.out.print("\n");
+            if (stringToCharArray.length != iteration) System.out.print("\n");
+            if (stringToCharArray.length == iteration) {
+                System.out.print("\n");
+                for (int i = 0; i < states.length; i++) {
+                    if (i != 0) System.out.print("\t");
+                    for (int j = 0; j < acceptStates.length; j++) {
+                        if (acceptStates[j].equals(states[i])) System.out.print("^");
+                    }
+                }
+            }
         }
 
         //Once we've run through the character inputted by the method call, the final step is to check if any of the accept states are live
@@ -136,19 +124,56 @@ public class NFA {
             if (state.isLive) finishedOnLiveState = true;
         }
 
-        //Additionally, we also need to reset the NFA back to its original state
-        //In other words, all states should be dead except the start state
 
-        for (State state : this.states) {
-            if (this.startState.equals(state)) state.setLive(true);
-            else state.setLive(false);
+        //Additionally, we also need to reset the NFA back to its original state once we've tested a string and messed with the states and liveState array
+        //In other words, all states should be dead except the start state
+        for (int i = 0; i < this.states.length; i++) {
+            if (this.startState.equals(states[i])) {
+                activateState(true, this.states[i], i);
+            } else {
+                activateState(false, this.states[i], i);
+            }
         }
+
+        if (finishedOnLiveState) {
+            System.out.print("\nThe input " + input + " is a valid input (Ended on an accept state)");
+        } else {
+            System.out.print("\nThe input " + input + " is an invalid input (Did not end on an accept state)");
+        }
+
         return finishedOnLiveState;
     }
 
-    public void printLiveStates() {
+    private void printLiveStates() {
         for (int index : liveStates) {
             System.out.print(index + "\t");
+        }
+    }
+
+
+    //Below is the considerLambdas function
+    //Before a character is read at any given iteration of an NFA reading a string, all live states with a λ transition point to another state must activate said state.
+    //Thus, the considerLambdas function allows the other methods of the NFA class to set valid states to be live, before the next character in an inputted string is read in
+    private void considerLambdas() {
+        for (int i = 0; i < this.states.length; i++) {
+            for (Transition transition : this.states[i].getTransitions()) {
+                if (transition.getInput() == 'λ') {
+                    activateState(true, transition.getTransitionState(), transition.getTransitionState().getIndex());
+                }
+            }
+        }
+    }
+
+
+    //Throughout the entire process of testing a string, we reference and edit both a State object's isLive field and the NFA's liveStates[] array in parallel
+    //Thus, we'll create this activateState to ensure that both are being done in tandem at all times
+    private void activateState(boolean turnAlive, State state, int index) {
+        if (turnAlive) {
+            state.setLive(true);
+            liveStates[index] = 1;
+        } else {
+            state.setLive(false);
+            liveStates[index] = 0;
         }
     }
 }
