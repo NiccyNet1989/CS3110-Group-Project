@@ -61,7 +61,7 @@ public class Main {
 
         /*
         =====================================================
-        Step 4
+        Step 4 (Can skip)
 
         Create an array of the all the states in the NFA, to be passed to the NFA constructor
             Example:    State[] states = {q0, q1};
@@ -145,7 +145,6 @@ public class Main {
 
         //Step 5
         NFA nfa = new NFA(states, q0, acceptStates);
-
 
         //Now we can use the NFA
         nfa.isValidInput("hello");
