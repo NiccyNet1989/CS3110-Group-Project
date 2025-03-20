@@ -3,6 +3,7 @@ public class State {
     public Transition[] transitions;
 
     private String name;
+    private int index;
 
     State(String InputtedName) {
         this.transitions = new Transition[0];
@@ -40,5 +41,13 @@ public class State {
 
     public Transition[] getTransitions() {
         return transitions;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }
