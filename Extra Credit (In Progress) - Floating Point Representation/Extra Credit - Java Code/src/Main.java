@@ -33,29 +33,19 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String input = "";
 
-        System.out.print("Please input any string to test Decimal Reader NFA\n\n");
-        input = scanner.nextLine();
-        System.out.print("\n");
+        while (true) {
+            System.out.print("Please input any string to test Decimal Reader NFA\n*Input the string 'exit' to end the program\n\n");
+            input = scanner.nextLine();
 
-        decimalReaderNFA.isValidInput(input);
+            if (input.equals("exit")) break;
+            decimalReaderNFA.isValidInput(input);
 
-//        while (true) {
-//            System.out.print("Please input any string to test Decimal Reader NFA\n*Input the string 'exit' to end the program\n\n");
-//            input = scanner.nextLine();
-//
-//            if (input.equals("exit")) break;
-//            if (decimalReaderNFA.isValidInput(input)) {
-//                System.out.print("\n" + input + " is a valid input (Ends on an accept state).");
-//            } else {
-//                System.out.print("\n" + input + " is an invalid input (Does not end on an accept state).");
-//            }
-//
-//            System.out.print("\n\nPress enter to continue\n");
-//            scanner = new Scanner(System.in);
-//            scanner.nextLine();
-//
-//            largeIndent();
-//        }
+            System.out.print("\n\nPress enter to continue\n");
+            scanner = new Scanner(System.in);
+            scanner.nextLine();
+
+            largeIndent();
+        }
     }
 
 
