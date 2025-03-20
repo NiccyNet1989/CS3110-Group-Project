@@ -36,9 +36,11 @@ public class NFA {
     }
 
     public boolean isValidInput(String input) {
+        System.out.print("Checking if \"" + input + "\" is a valid input...\n");
         boolean finishedOnLiveState = false;
         char[] stringToCharArray = input.toCharArray();
         boolean firstIteration = true;
+        int iteration = 0;
 
         for (char character : stringToCharArray) {
             //The following is just to display the starting point after lambda functions have been considered
@@ -127,8 +129,18 @@ public class NFA {
                 }
             }
 
+            iteration++;
             printLiveStates();
-            System.out.print("\n");
+            if (stringToCharArray.length != iteration) System.out.print("\n");
+            if (stringToCharArray.length == iteration) {
+                System.out.print("\n");
+                for (int i = 0; i < states.length; i++) {
+                    if (i != 0) System.out.print("\t");
+                    for (int j = 0; j < acceptStates.length; j++) {
+                        if (acceptStates[j].equals(states[i])) System.out.print("^");
+                    }
+                }
+            }
         }
 
         //Once we've run through the character inputted by the method call, the final step is to check if any of the accept states are live
@@ -136,17 +148,28 @@ public class NFA {
             if (state.isLive) finishedOnLiveState = true;
         }
 
+
         //Additionally, we also need to reset the NFA back to its original state
         //In other words, all states should be dead except the start state
+        for (int i = 0; i < this.states.length; i++) {
+            if (this.startState.equals(states[i])) {
+                states[i].setLive(true);
+                liveStates[i] = 1;
+            } else {
+                states[i].setLive(false);
+                liveStates[i] = 0;
+            }
+        }
 
-        for (State state : this.states) {
-            if (this.startState.equals(state)) state.setLive(true);
-            else state.setLive(false);
+        if (finishedOnLiveState) {
+            System.out.print("\nThe input " + input + " is a valid input (Ended on an accept state)");
+        } else {
+            System.out.print("\nThe input " + input + " is an invalid input (Did not end on an accept state)");
         }
         return finishedOnLiveState;
     }
 
-    public void printLiveStates() {
+    private void printLiveStates() {
         for (int index : liveStates) {
             System.out.print(index + "\t");
         }

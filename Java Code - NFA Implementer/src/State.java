@@ -9,6 +9,10 @@ public class State {
         this.name = InputtedName;
     }
 
+    State() {
+        this.transitions = new Transition[0];
+    }
+
     public void setTransitions(Transition[] newTransitions) {
         this.transitions = newTransitions;
     }
