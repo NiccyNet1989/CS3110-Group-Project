@@ -9,6 +9,10 @@ Nicholas Magtangob - NiccyNet1989
 		-NFA Class (Includes major function for running input string through an NFA object)
 		-State Class (Includes functionality for transitions
 		-Transition Class (Contains fields for input and state to transition to)
+	Completed Extra Credit Section
+		-Developed NFA on JFlap which recognizes Python Floating Point Literals
+		-Saved and added JFlap NFA and jpg image into repository
+		-Utilized the "NFA to Java" tools we created earlier to represent the created NFA in JFlap in a Java Program
 
 
 Jayden Nguyen
