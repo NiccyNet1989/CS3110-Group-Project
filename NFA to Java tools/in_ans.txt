@@ -1,0 +1,9 @@
+01 true
+001 true
+101 true
+1 false
+0 false
+10 false
+011 false
+0011 false
+
