@@ -15,8 +15,13 @@ Nicholas Magtangob - NiccyNet1989
 		-Utilized the "NFA to Java" tools we created earlier to represent the created NFA in JFlap in a Java Program
 
 
-Jayden Nguyen
-
+Jayden Nguyen - Jayvnn
+  - Assisted in debugging file paths and input/output issues in the Java program  
+  - Modified the main.java to correctly load the NFA from JFLAP and read test cases from in_ans.txt  
+  - Integrated file-based testing to generate out.txt with actual, expected results and pass/fail status  
+  - Contributed to refining error handling and console debugging outputs  
+  - Added error handling
+  - Implementing addition code documention in Main.java
 
 
 Alex Shafeian
