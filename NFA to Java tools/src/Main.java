@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+<<<<<<< Updated upstream
         /*
         =====================================================
         Step 1
@@ -130,6 +131,60 @@ public class Main {
         System.out.print("\n\n\n\n");
 
 
+=======
+        try {
+            // Load the NFA from the JFLAP (.jff) file using the relative path.
+            NFA nfa = loadNFAFromJFF("Nfa.jff");
+            
+            // Use file-based testing: read test cases from "in_ans.txt" and write results to "out.txt"
+            File inputFile = new File("in_ans.txt");
+            File outputFile = new File("NFA to Java tools/out.txt");
+            
+            // Debug output: show absolute paths used
+            System.out.println("Using input file: " + inputFile.getAbsolutePath());
+            System.out.println("Using output file: " + outputFile.getAbsolutePath());
+            
+            try (Scanner fileScanner = new Scanner(inputFile);
+                 PrintWriter writer = new PrintWriter(outputFile)) {
+                 
+                // Check if file has content
+                if (!fileScanner.hasNextLine()) {
+                    System.out.println("Test file in_ans.txt appears to be empty.");
+                }
+                 
+                while (fileScanner.hasNextLine()) {
+                    String line = fileScanner.nextLine().trim();
+                    if (line.isEmpty()) continue;
+                    
+                    // Each line should be in the format: <input> <expectedResult>
+                    String[] parts = line.split("\\s+");
+                    if (parts.length < 2) {
+                        System.out.println("Ignoring improperly formatted line: " + line);
+                        continue;
+                    }
+                    
+                    String testInput = parts[0];
+                    String expected = parts[1];
+                    
+                    // Evaluate the input using your custom NFA
+                    boolean actual = nfa.isValidInput(testInput);
+                    System.out.println(actual);
+                    String passFail = (String.valueOf(actual).equalsIgnoreCase(expected)) ? "pass" : "fail";
+                    
+                    String outputLine = String.format("Input: %-10s Actual: %-5s Expected: %-5s %s", 
+                                                      testInput, actual, expected, passFail);
+                    writer.println(outputLine);
+                    
+                    System.out.println(outputLine);
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("Test file NFA to Java tools/in_ans.txt not found: " + e.getMessage());
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading NFA from Nfa.jff: " + e.getMessage());
+            e.printStackTrace();
+        }
+>>>>>>> Stashed changes
     }
 
 
