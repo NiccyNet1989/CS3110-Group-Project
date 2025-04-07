@@ -11,11 +11,9 @@ public class Main {
     public static void main(String[] args) {
         try {
             // Load the NFA from the JFLAP (.jff) file using the relative path.
-            // Since Main.java is in "NFA to Java tools/src", use "NFA to Java tools/Nfa.jff" 
             NFA nfa = loadNFAFromJFF("NFA to Java tools/Nfa.jff");
             
-            // Use file-based testing: read test cases from "NFA to Java tools/in_ans.txt"
-            // and write results to "NFA to Java tools/out.txt"
+            // Use file-based testing: read test cases from "in_ans.txt" and write results to "out.txt"
             File inputFile = new File("NFA to Java tools/in_ans.txt");
             File outputFile = new File("NFA to Java tools/out.txt");
             
@@ -54,7 +52,6 @@ public class Main {
                                                       testInput, actual, expected, passFail);
                     writer.println(outputLine);
                     
-                    // Also print to console for debugging
                     System.out.println(outputLine);
                 }
             } catch (FileNotFoundException e) {
