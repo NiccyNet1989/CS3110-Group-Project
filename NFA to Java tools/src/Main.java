@@ -113,8 +113,8 @@ public class Main {
             String toId   = transElem.getElementsByTagName("to").item(0).getTextContent();
             String read   = transElem.getElementsByTagName("read").item(0).getTextContent();
             // In JFLAP, an empty transition is represented by an empty string.
-            if (read == null) {
-                read = "";
+            if (read.equals("")) {
+                read = "λ";
             }
             State fromState = stateMap.get(fromId);
             State toState = stateMap.get(toId);
