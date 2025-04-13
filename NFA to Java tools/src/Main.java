@@ -11,10 +11,10 @@ public class Main {
     public static void main(String[] args) {
         try {
             // Load the NFA from the JFLAP (.jff) file using the relative path.
-            NFA nfa = loadNFAFromJFF("NFA to Java tools/Nfa.jff");
+            NFA nfa = loadNFAFromJFF("Nfa.jff");
             
             // Use file-based testing: read test cases from "in_ans.txt" and write results to "out.txt"
-            File inputFile = new File("NFA to Java tools/in_ans.txt");
+            File inputFile = new File("in_ans.txt");
             File outputFile = new File("NFA to Java tools/out.txt");
             
             // Debug output: show absolute paths used
@@ -113,8 +113,8 @@ public class Main {
             String toId   = transElem.getElementsByTagName("to").item(0).getTextContent();
             String read   = transElem.getElementsByTagName("read").item(0).getTextContent();
             // In JFLAP, an empty transition is represented by an empty string.
-            if (read == null) {
-                read = "";
+            if (read.equals("")) {
+                read = "λ";
             }
             State fromState = stateMap.get(fromId);
             State toState = stateMap.get(toId);

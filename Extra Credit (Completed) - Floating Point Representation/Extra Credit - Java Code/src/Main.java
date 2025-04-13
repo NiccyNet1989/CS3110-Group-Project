@@ -1,65 +1,137 @@
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.*;
 
 public class Main {
     public static void main(String[] args) {
-        //Initialize states to generate completed state definitions later
-        State q0 = new State("q0"), q1 = new State("q1"), q2 = new State("q2"), q3 = new State("q3"), q4 = new State("q4");
-        State q5 = new State("q5"), q6 = new State("q6"), q7 = new State("q7"), q8 = new State("q8");
-        State q9 = new State("q9"), q10 = new State("q10"), q11 = new State("q11");
+        try {
+            // Load the NFA from the JFLAP (.jff) file using the relative path.
+            NFA nfa = loadNFAFromJFF("NFA - Python Floating Point Literal.jff");
 
-        //Now add transitions to states
-        q0.addTransitions("λ-", q1);
-        q1.addTransitions("0123456789", q1);
-        q1.addTransitions("0123456789", q2);
-        q1.addTransitions(".", q4);
-        q1.addTransitions("_", q11);
-        q2.addTransitions(".", q3);
-        q2.addTransitions("eE", q7);
-        q4.addTransitions("0123456789", q5);
-        q5.addTransitions("0123456789", q5);
-        q5.addTransitions("_", q6);
-        q5.addTransitions("eE", q7);
-        q6.addTransitions("0123456789", q5);
-        q7.addTransitions("λ-", q8);
-        q8.addTransitions("0123456789", q9);
-        q9.addTransitions("0123456789", q9);
-        q9.addTransitions("_", q10);
-        q10.addTransitions("0123456789", q9);
-        q11.addTransitions("0123456789", q1);
+            // Use file-based testing: read test cases from "in_ans.txt" and write results to "out.txt"
+            File inputFile = new File("in_ans.txt");
+            File outputFile = new File("out.txt");
 
-        NFA decimalReaderNFA = new NFA(new State[]{q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10}, q0, new State[]{q3, q5, q9});
+            // Debug output: show absolute paths used
+            System.out.println("Using input file: " + inputFile.getAbsolutePath());
+            System.out.println("Using output file: " + outputFile.getAbsolutePath());
 
-//        decimalReaderNFA.printTransitions();
-//        decimalReaderNFA.printLiveStates();
+            try (Scanner fileScanner = new Scanner(inputFile);
+                 PrintWriter writer = new PrintWriter(outputFile)) {
 
-        Scanner scanner = new Scanner(System.in);
-        String input = "";
+                // Check if file has content
+                if (!fileScanner.hasNextLine()) {
+                    System.out.println("Test file in_ans.txt appears to be empty.");
+                }
 
-        while (true) {
-            System.out.print("Please input any string to test Floating Point Literal NFA\n*Input the string 'exit' to end the program\n\n");
-            input = scanner.nextLine();
+                while (fileScanner.hasNextLine()) {
+                    String line = fileScanner.nextLine().trim();
+                    if (line.isEmpty()) continue;
 
-            if (input.equals("exit")) break;
-            decimalReaderNFA.isValidInput(input);
+                    // Each line should be in the format: <input> <expectedResult>
+                    String[] parts = line.split("\\s+");
+                    if (parts.length < 2) {
+                        System.out.println("Ignoring improperly formatted line: " + line);
+                        continue;
+                    }
 
-            System.out.print("\n\nPress enter to continue\n");
-            scanner = new Scanner(System.in);
-            scanner.nextLine();
+                    String testInput = parts[0];
+                    String expected = parts[1];
 
-            largeIndent();
+                    // Evaluate the input using your custom NFA
+                    boolean actual = nfa.isValidInput(testInput);
+                    System.out.println(actual);
+                    String passFail = (String.valueOf(actual).equalsIgnoreCase(expected)) ? "pass" : "fail";
+
+                    String outputLine = String.format("Input: %-10s Actual: %-5s Expected: %-5s %s",
+                            testInput, actual, expected, passFail);
+                    writer.println(outputLine);
+
+                    System.out.println(outputLine);
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("Test file NFA to Java tools/in_ans.txt not found: " + e.getMessage());
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading NFA from Nfa.jff: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
+    // Loads an NFA from a JFLAP (.jff) file.
+    public static NFA loadNFAFromJFF(String fileName) throws Exception {
+        // Parse the JFLAP XML file
+        File xmlFile = new File(fileName);
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(xmlFile);
+        doc.getDocumentElement().normalize();
 
-    public static void largeIndent() {
-        System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        // Create a mapping from state id to State object
+        HashMap<String, State> stateMap = new HashMap<>();
+        NodeList stateList = doc.getElementsByTagName("state");
+        for (int i = 0; i < stateList.getLength(); i++) {
+            Element stateElem = (Element) stateList.item(i);
+            String id = stateElem.getAttribute("id");
+            String name = stateElem.getAttribute("name");
+            if (name == null || name.isEmpty()) {
+                name = "q" + id;
+            }
+            State state = new State(name);
+            stateMap.put(id, state);
+        }
+
+        // Identify the start state and final states from the XML
+        State startState = null;
+        HashMap<String, Boolean> finalIDs = new HashMap<>();
+        for (int i = 0; i < stateList.getLength(); i++) {
+            Element stateElem = (Element) stateList.item(i);
+            String id = stateElem.getAttribute("id");
+
+            // Check for the <initial/> tag
+            NodeList initialNodes = stateElem.getElementsByTagName("initial");
+            if (initialNodes.getLength() > 0) {
+                startState = stateMap.get(id);
+            }
+            // Check for the <final/> tag
+            NodeList finalNodes = stateElem.getElementsByTagName("final");
+            if (finalNodes.getLength() > 0) {
+                finalIDs.put(id, true);
+            }
+        }
+
+        // Add transitions based on the XML <transition> elements
+        NodeList transList = doc.getElementsByTagName("transition");
+        for (int i = 0; i < transList.getLength(); i++) {
+            Element transElem = (Element) transList.item(i);
+            String fromId = transElem.getElementsByTagName("from").item(0).getTextContent();
+            String toId   = transElem.getElementsByTagName("to").item(0).getTextContent();
+            String read   = transElem.getElementsByTagName("read").item(0).getTextContent();
+            // In JFLAP, an empty transition is represented by an empty string.
+            if (read.equals("")) {
+                read = "λ";
+            }
+            State fromState = stateMap.get(fromId);
+            State toState = stateMap.get(toId);
+            // Add each character as a separate transition using your addTransitions method
+            fromState.addTransitions(read, toState);
+        }
+
+        // Create collections of all states and of the final (accept) states
+        State[] states = stateMap.values().toArray(new State[stateMap.size()]);
+        java.util.List<State> acceptList = new java.util.ArrayList<>();
+        for (String id : stateMap.keySet()) {
+            if (finalIDs.containsKey(id)) {
+                acceptList.add(stateMap.get(id));
+            }
+        }
+        State[] acceptStates = acceptList.toArray(new State[acceptList.size()]);
+
+        return new NFA(states, startState, acceptStates);
     }
 }
