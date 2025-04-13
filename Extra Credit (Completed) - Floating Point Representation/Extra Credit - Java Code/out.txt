@@ -11,6 +11,7 @@ Input: 3.14_15_93 Actual: true  Expected: true  pass
 Input: 123_456_789.123_456_789E123_456_789 Actual: true  Expected: true  pass
 Input: 853_9123.53 Actual: true  Expected: true  pass
 Input: 123_4.     Actual: true  Expected: true  pass
+Input: .1_2       Actual: true  Expected: true  pass
 Input: -123_456_789.123_456_789E123_456_789 Actual: false Expected: false pass
 Input: .          Actual: false Expected: false pass
 Input: .0123e     Actual: false Expected: false pass
