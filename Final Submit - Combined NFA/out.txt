@@ -18,3 +18,11 @@ Input: .0123e     Actual: false Expected: false pass
 Input: .680e-     Actual: false Expected: false pass
 Input: -0.1234E-0.123 Actual: false Expected: false pass
 Input: -24123.abc Actual: false Expected: false pass
+Input: 2147483647 Actual: true  Expected: true  pass
+Input: 79228162514264337593543950336 Actual: true  Expected: true  pass
+Input: 100_000_000_000 Actual: true  Expected: true  pass
+Input: 0o177      Actual: true  Expected: true  pass
+Input: 0o377      Actual: true  Expected: true  pass
+Input: 0b100110111 Actual: false Expected: false pass
+Input: 0xdeadbeef Actual: true  Expected: true  pass
+Input: 0b_1110_0101 Actual: false Expected: false pass
