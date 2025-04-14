@@ -18,3 +18,11 @@
 .680e- false
 -0.1234E-0.123 false
 -24123.abc false
+2147483647 true
+79228162514264337593543950336 true
+100_000_000_000 true
+0o177 true
+0o377 true
+0b100110111 false
+0xdeadbeef true
+0b_1110_0101 false
