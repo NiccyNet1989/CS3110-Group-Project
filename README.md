@@ -19,7 +19,8 @@ Nicholas Magtangob - NiccyNet1989
 	- Developed NFA on JFlap which recognizes Python Floating Point Literals
 	- Saved and added JFlap NFA and jpg image into repository
 	- Utilized the "NFA to Java" tools we created earlier to represent the created NFA in JFlap in a Java Program
-		
+  - Edited Main files to allow user to input test strings through console (After the program has already run test strings from "in_ans")
+  
 
 
 Jayden Nguyen - Jayvnn
