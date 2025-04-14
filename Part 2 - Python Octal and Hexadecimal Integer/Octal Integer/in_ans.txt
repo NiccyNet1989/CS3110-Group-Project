@@ -1,9 +1,12 @@
-01 true
-001 true
-101 true
-1 false
-0 false
-10 false
-011 false
-0011 false
-
+0o123 true
+0o_123 true
+0o1_2_3 true
+0O777 true
+0o0 true
+0o000 true
+0o false
+0o_ false
+0o1__2 false
+0o123_ false
+0o_8 false
+0o89 false
