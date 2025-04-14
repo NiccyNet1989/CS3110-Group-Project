@@ -1,9 +1,8 @@
-01 true
-001 true
-101 true
-1 false
-0 false
-10 false
-011 false
-0011 false
-
+2193 true
+1234_4567890 true
+0 true
+0_0 true
+123_456_789_0 true
+0123 false
+0_123 false
+_1234 false

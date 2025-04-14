@@ -1,8 +1,0 @@
-Input: 01         Actual: true  Expected: true  pass
-Input: 001        Actual: true  Expected: true  pass
-Input: 101        Actual: true  Expected: true  pass
-Input: 1          Actual: false Expected: false pass
-Input: 0          Actual: false Expected: false pass
-Input: 10         Actual: false Expected: false pass
-Input: 011        Actual: false Expected: false pass
-Input: 0011       Actual: false Expected: false pass
