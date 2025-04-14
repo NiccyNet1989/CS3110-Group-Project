@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.*;
 
 public class Main {
@@ -54,6 +55,8 @@ public class Main {
 
                     System.out.println(outputLine);
                 }
+
+                validateUntilExit(nfa);
             } catch (FileNotFoundException e) {
                 System.out.println("Test file NFA to Java tools/in_ans.txt not found: " + e.getMessage());
             }
@@ -110,8 +113,8 @@ public class Main {
         for (int i = 0; i < transList.getLength(); i++) {
             Element transElem = (Element) transList.item(i);
             String fromId = transElem.getElementsByTagName("from").item(0).getTextContent();
-            String toId   = transElem.getElementsByTagName("to").item(0).getTextContent();
-            String read   = transElem.getElementsByTagName("read").item(0).getTextContent();
+            String toId = transElem.getElementsByTagName("to").item(0).getTextContent();
+            String read = transElem.getElementsByTagName("read").item(0).getTextContent();
             // In JFLAP, an empty transition is represented by an empty string.
             if (read.equals("")) {
                 read = "λ";
@@ -133,5 +136,23 @@ public class Main {
         State[] acceptStates = acceptList.toArray(new State[acceptList.size()]);
 
         return new NFA(states, startState, acceptStates);
+    }
+
+    public static void validateUntilExit(NFA nfa) {
+        Scanner scanner = new Scanner(System.in);
+        String string = "";
+
+        System.out.println("\n");
+
+        while (true) {
+            System.out.println("To test further inputs, please input a string (Type \"exit\" to end the program):");
+            string = scanner.nextLine();
+
+            if (string.toLowerCase().equals("exit")) break;
+
+            nfa.isValidInput(string);
+
+            System.out.println("\n\n");
+        }
     }
 }
