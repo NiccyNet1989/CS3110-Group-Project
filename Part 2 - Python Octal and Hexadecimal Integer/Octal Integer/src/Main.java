@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             // Load the NFA from the JFLAP (.jff) file using the relative path.
-            NFA nfa = loadNFAFromJFF("Combined NFA.jff");
+            NFA nfa = loadNFAFromJFF("octal_nfa.jff");
 
             // Use file-based testing: read test cases from "in_ans.txt" and write results to "out.txt"
             File inputFile = new File("in_ans.txt");
