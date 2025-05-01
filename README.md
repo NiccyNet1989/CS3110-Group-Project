@@ -1,7 +1,8 @@
 Group "JEAN?" Members (Full Name, Github Username, Tasks Completed for Project)
 ================================================================================
 Nicholas Magtangob - NiccyNet1989
-  - Created Github
+  - Created and managed Github project repository
+  - Developed an initial checklist for group member tasks to complete
   - Created Initial NFA for Decimal Reader
   - Created NFA to Java Tools
 	-Includes 3 classes ; NFA, State, and Transition
