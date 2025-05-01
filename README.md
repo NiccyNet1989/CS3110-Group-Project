@@ -40,6 +40,7 @@ Jayden Nguyen - Jayvnn
 
 Alex Shafeian
 
+I inserted support for accepting Python-form octal and hex integer literals and regular decimal integers into the program. Based on Python's spec syntax conventions (sections 2.4.4 and 2.4.5), I implemented NFAs for octal (0o or 0O prefix) and hexadecimal (0x or 0X prefix) integers and integrated them into the existing available NFA for decimal integers. I also modified the code to prompt the user for input and determine if the input string is a valid integer literal in any of the three forms. Finally, we performed file-based testing to test for correctness of the combined NFA and input validation logic and ensure that all three forms are properly identified in one run.
 
 
 Ethan William
