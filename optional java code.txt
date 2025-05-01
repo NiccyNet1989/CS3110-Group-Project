@@ -1,0 +1,80 @@
+import java.util.Scanner;
+
+public class NumberValidator {
+
+    public static boolean isDecimal(String s) {
+        if (s == null || s.isEmpty()) return false;
+
+        if (s.startsWith("+") || s.startsWith("-")) {
+            s = s.substring(1);
+        }
+
+        if (s.length() > 1 && s.startsWith("0")) return false;
+
+        return s.matches("\\d+");
+    }
+
+    public static boolean isOctal(String s) {
+        return s.matches("0[oO][0-7]+");
+    }
+
+    public static boolean isHexadecimal(String s) {
+        return s.matches("0[xX][0-9a-fA-F]+");
+    }
+
+    public static boolean isFloatingPoint(String s) {
+        if (s == null || s.isEmpty()) return false;
+
+        String original = s;
+
+        if (s.startsWith("+") || s.startsWith("-")) {
+            s = s.substring(1);
+            original = original.substring(1);
+        }
+
+        // Must contain '.' or 'e' to be floating-point
+        if (!original.contains(".") && !original.contains("e") && !original.contains("E")) {
+            return false;
+        }
+
+        // Reject strings like "012.3"
+        if (s.matches("0\\d+.*")) {
+            return false;
+        }
+
+        return original.matches("((\\d+\\.\\d*)|(\\.\\d+)|(\\d+))(?:[eE][+-]?\\d+)?");
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        String input = scanner.next().trim();
+
+        boolean isValid = false;
+
+        if (isDecimal(input)) {
+            System.out.println("ACCEPT");
+            System.out.println("Valid Decimal Integer");
+            isValid = true;
+        } else if (isOctal(input)) {
+            System.out.println("ACCEPT");
+            System.out.println("Valid Octal Integer");
+            isValid = true;
+        } else if (isHexadecimal(input)) {
+            System.out.println("ACCEPT");
+            System.out.println("Valid Hexadecimal Integer");
+            isValid = true;
+        } else if (isFloatingPoint(input)) {
+            System.out.println("ACCEPT");
+            System.out.println("Valid Floating-Point Number");
+            isValid = true;
+        }
+
+        if (!isValid) {
+            System.out.println("REJECT");
+            System.out.println("Invalid number format");
+        }
+
+        scanner.close();
+    }
+}
