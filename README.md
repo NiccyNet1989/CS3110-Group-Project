@@ -19,6 +19,11 @@ Nicholas Magtangob - NiccyNet1989
 	- Developed NFA on JFlap which recognizes Python Floating Point Literals
 	- Saved and added JFlap NFA and jpg image into repository
 	- Utilized the "NFA to Java" tools we created earlier to represent the created NFA in JFlap in a Java Program
+  - Created combined NFA for final project submission
+	-Took in NFA's generated on JFlap for "Python Decimal Integer", "Python Octal Integer", "Python Hexadecimal Integer", and "Python Floating Point Literal"
+	-Combined each NFA in JFlap using a new start state and 4 different Lambda transitions
+	-Saved NFA jff file and jpg in respective project folder
+	-Generated copy of "NFA to Java Tools" and edited main function to read in "Combined NFA.jff" to represent final NFA in Java
   - Edited Main files to allow user to input test strings through console (After the program has already run test strings from "in_ans")
   
 
